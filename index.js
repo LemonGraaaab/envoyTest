@@ -3,7 +3,7 @@ const { middleware, errorMiddleware } = require('@envoy/envoy-integrations-sdk')
 
 const app = express();
 
-app.post('/hello-options', (req, res) => {
+app.get('/hello-options', (req, res) => {
   res.send([
     {
       label: 'Hello',
