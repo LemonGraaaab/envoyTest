@@ -21,7 +21,7 @@ app.get('/hello-options', (req, res) => {
   ]);
 });
 
-app.get('/test', function (req, res) => {
+app.get('/test', function (req, res){
   https.get('https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=123&data_type=occupancy_raw&start=123', (resp) => {
 
   // The whole response has been received. Print out the result.
