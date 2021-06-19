@@ -26,7 +26,7 @@ app.get('/hello-options', (req, res) => {
 app.get('/test', async (req, res) =>{
   axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=1234&data_type=occupancy_raw&start=123")
        .then(response => res.json(response.data))
-       .catch(err => res.secn(err));
+       .catch(err => res.send(err));
 });
 
 app.post('/entry-sign-in', async (req, res) => {
