@@ -1,6 +1,8 @@
 const express = require('express');
 const { middleware, errorMiddleware } = require('@envoy/envoy-integrations-sdk');
 const https = require('https');
+const axios = require('axios')
+
 
 const app = express();
 
@@ -21,14 +23,18 @@ app.get('/hello-options', (req, res) => {
   ]);
 });
 
-app.get('/test', function (req, res){
-  https.get('https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=1234&data_type=occupancy_raw&start=1234', (resp) => {
-
-  // The whole response has been received. Print out the result.
-  console.log(resp);
-
-
-  };
+app.get('/test', async (req, res) =>{
+  const getData = async (url) => {
+    try {
+      console.log("HEER")
+      const response = await axios.get(url)
+      const data = response.data
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  getData('https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=1234&data_type=occupancy_raw&start=1234')
 });
 
 app.post('/entry-sign-in', async (req, res) => {
