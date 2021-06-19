@@ -28,9 +28,7 @@ app.get('/test', function (req, res){
   console.log(resp);
 
 
-  }).on("error", (err) => {
-    console.log("Error: " + err.message);
-  });
+  };
 });
 
 app.post('/entry-sign-in', async (req, res) => {
