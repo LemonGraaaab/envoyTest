@@ -29,16 +29,14 @@ app.get('/test', async (req, res) =>{
       console.log("HEER")
       const response = await axios.get(url)
       const data = response.data
-            console.log("HEER1")
-
-      console.log(data)
+      return data
     } catch (error) {
             console.log("HEER2")
 
-      console.log(error)
+      return error
     }
   }
-  getData('https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=1234&data_type=occupancy_raw&start=1234')
+  res.send([getData('https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=1234&data_type=occupancy_raw&start=1234')])
 });
 
 app.post('/entry-sign-in', async (req, res) => {
