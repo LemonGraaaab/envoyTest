@@ -44,13 +44,13 @@ app.get('/test', async (req, res) =>{
     .then(data => {
         response.json({ message: 'Occupany Data:', data })
     })
-    .catch(err => function(err)){
+    .catch(err => function(err){
       if(err.response && err.response.status === 404){
         refresh()
       }else{
         res.send(err.status)
       }
-    }
+    })
   // axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=123&data_type=occupancy_raw&start=123&database=eval",{ headers: {"Authorization" : `Bearer ${tokenStr}`} })
   //      .then(response => res.json(response.data))
   //      .catch(err => res.send(err));
