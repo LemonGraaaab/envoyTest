@@ -53,7 +53,9 @@ app.get('/test', async (req, res) =>{
       console.log("HERE");
       if(error.response){
         console.log(error.response.status);
-        refresh()
+        if(error.response.status === 401){
+          refresh()
+        }
         res.json(error.response)
       }      
     }
