@@ -54,7 +54,7 @@ app.get('/test', async (req, res) =>{
       if(error.response){
         console.log(error.response.status);
         refresh()
-        res.send(error.response)
+        res.json(error.response)
       }      
     }
   });
