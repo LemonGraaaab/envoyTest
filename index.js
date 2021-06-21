@@ -18,7 +18,7 @@ function getToken() {
     returnSecureToken: true
   });
 
-  const dataPromise = promise.then((response) => response.data)
+  const dataPromise = promise.then((response) => response.data.idToken)
   return dataPromise
 }
 
