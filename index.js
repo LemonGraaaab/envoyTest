@@ -7,7 +7,19 @@ const axios = require('axios')
 const app = express();
 
 function refresh() { 
-    console.log("REFRESHHHHHH");
+  
+}
+
+function getToken() {
+  console.log("TOKEN");
+  const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
+    email: 'donglong199312@gmail.com',
+    password: 'longdong',
+    returnSecureToken: true
+  });
+
+  const dataPromise = promise.then((response) => response.data)
+  return dataPromise
 }
 
 function queryOccupany(tokenStr){
@@ -43,6 +55,8 @@ app.get('/hello-options', (req, res) => {
 });
 
 app.get('/test', async (req, res) =>{
+  const token = await getToken();
+  console.log(token);
   let tokenStr = 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg4ZGYxMzgwM2I3NDM2NjYWQ0ODE0NmE4ZGExYjA3MTg2ZmQxZTkiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRG9uZyIsInJvbGVzIjpbInN1cGVydXNlciJdLCJjbGllbnRfaWQiOiJjbGllbnRfMXJHanpidE43bXhSVmlaMXJwbUk2WVpvcVo2IiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2J1dGxyLWNsaWVudCIsImF1ZCI6ImJ1dGxyLWNsaWVudCIsImF1dGhfdGltZSI6MTYyNDI0OTAzNiwidXNlcl9pZCI6InVzZXJfMGQyOGM2M2FhMzU1M2MwNDE2ZTMzNzYzMGI3MzZmODcyOGQ1MmQwYiIsInN1YiI6InVzZXJfMGQyOGM2M2FhMzU1M2MwNDE2ZTMzNzYzMGI3MzZmODcyOGQ1MmQwYiIsImlhdCI6MTYyNDI0OTAzNiwiZXhwIjoxNjI0MjUyNjM2LCJlbWFpbCI6ImRvbmdsb25nMTk5MzEyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImRvbmdsb25nMTk5MzEyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.kVIrHuCjxCE_gzlBUrYlcHmw02S-7ICnhYGZ0HefcsQWa-K8mKED4eJ39_1e7GfURkgSpdcvYwXUVZfDqH0mSzZ_Y81xm3F_0hUGG0A6VYur7EP_8euLrg0h-7v269Iq-A5WFHtU0a-2NCTiJa_-y8D0NE5egQsOZEQng71iCcnTcyXHzsrZDtwGK0o_-tK-C44cRPDEUVd3obUjxOjNN4MC0MwuARfHVg4Do-vwJRbESYFMJG0-SMc5WsrUPqJEZ7S4WDiMXcL7e5WjrKtJ0Yt7JIyrtDfX1GXiqo73d-vMXux6EbDKDn2mwJXPgRWr08KX18ey-elMT3ITgoCssA.eyJuYW1lIjoiRG9uZyIsInJvbGVzIjpbInN1cGVydXNlciJdLCJjbGllbnRfaWQiOiJjbGllbnRfMXJHanpidE43bXhSVmlaMXJwbUk2WVpvcVo2IiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2J1dGxyLWNsaWVudCIsImF1ZCI6ImJ1dGxyLWNsaWVudCIsImF1dGhfdGltZSI6MTYyNDA3NTIzOSwidXNlcl9pZCI6InVzZXJfMGQyOGM2M2FhMzU1M2MwNDE2ZTMzNzYzMGI3MzZmODcyOGQ1MmQwYiIsInN1YiI6InVzZXJfMGQyOGM2M2FhMzU1M2MwNDE2ZTMzNzYzMGI3MzZmODcyOGQ1MmQwYiIsImlhdCI6MTYyNDA3NTIzOSwiZXhwIjoxNjI0MDc4ODM5LCJlbWFpbCI6ImRvbmdsb25nMTk5MzEyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImRvbmdsb25nMTk5MzEyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.mawIoMaNheVKOJi43-ZssMGrRq7fJo-NBT1UXGA12OcsrXxLjTgthakEHXL60b38sx9eWQer1Lp3qNfOf7ZpAYw0hznunDki5SNh9vJb-YTgE75HTkMDlPC09iunxTSFulXYZ30tlN57w00_2ezTXtdyTVMT0oRtOSV4qXHmZmnK5yjy7ozpBvEzIp4Io6ckcWgM4XazB8Kv0EIp5sBVhc6IyVLZxHzOKxJ7sE00Wwyg3vt09sTA4E9KUEmxRNTtGEYHSAMDmqA_IK16kfgp4SJiDAI_CEil2HZJZiwItT39JfFv9d9DMoSvtFQru3STm7LrFgm0N5M5M-V60JQqVQ';
   queryOccupany(tokenStr)
     .then(data => res.json(response.data))
