@@ -11,6 +11,7 @@ function refresh() {
 }
 
 function queryOccupany(tokenStr){
+  console.log("QUERY");
   // create a promise for the axios request
     const promise = axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=123&data_type=occupancy_raw&start=123&database=eval",{ headers: {"Authorization" : `Bearer ${tokenStr}`} })
 
