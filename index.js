@@ -54,7 +54,7 @@ app.get('/hello-options', (req, res) => {
   ]);
 });
 
-app.get('/checkAllOccupancy', async (req, res) =>{
+app.post('/checkAllOccupancy', async (req, res) =>{
   const token = await getToken();
   console.log(token);
   const data = await queryOccupany(token)
