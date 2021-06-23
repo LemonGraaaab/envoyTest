@@ -61,9 +61,7 @@ app.post('/checkAllOccupancy', async (req, res) =>{
   console.log(token);
   const data = await queryOccupany(token)
   const envoy = req.envoy; // our middleware adds an "envoy" object to req.
-    console.log(req);
-      console.log(req.envoy);
-
+  console.log(envoy);
 
   const job = envoy.job;
   await job.attach({ label: 'Hello', value: data });
@@ -72,6 +70,8 @@ app.post('/checkAllOccupancy', async (req, res) =>{
 
 app.post('/entry-sign-in', async (req, res) => {
   const envoy = req.envoy; // our middleware adds an "envoy" object to req.
+    console.log(envoy);
+
   const job = envoy.job;
   const hello = envoy.meta.config.HELLO;
   const visitor = envoy.payload;
