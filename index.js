@@ -65,6 +65,8 @@ app.post('/checkAllOccupancy', async (req, res) =>{
 
   const job = envoy.job;
   await job.attach({ label: 'Hello', value: data });
+  console.log(data);
+
   res.send(data)
 });
 
