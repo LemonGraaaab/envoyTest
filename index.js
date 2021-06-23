@@ -5,6 +5,8 @@ const axios = require('axios')
 
 
 const app = express();
+app.use(middleware());
+
 
 function refresh() { 
   
@@ -59,6 +61,10 @@ app.post('/checkAllOccupancy', async (req, res) =>{
   console.log(token);
   const data = await queryOccupany(token)
   const envoy = req.envoy; // our middleware adds an "envoy" object to req.
+    console.log(req);
+      console.log(req.envoy);
+
+
   const job = envoy.job;
   await job.attach({ label: 'Hello', value: data });
   res.send(data)
