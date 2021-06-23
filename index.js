@@ -58,6 +58,9 @@ app.post('/checkAllOccupancy', async (req, res) =>{
   const token = await getToken();
   console.log(token);
   const data = await queryOccupany(token)
+  const envoy = req.envoy; // our middleware adds an "envoy" object to req.
+  const job = envoy.job;
+  await job.attach({ label: 'Hello', value: data });
   res.send(data)
 });
 
