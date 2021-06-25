@@ -72,7 +72,7 @@ app.post('/checkAllOccupancy', async (req, res) =>{
     msg[room['device_id']] = room['occupancy']
     console.log(room)
   }
-  await job.attach(msg);
+  await job.attach({msg});
   console.log(data);
 
   res.send(data)
