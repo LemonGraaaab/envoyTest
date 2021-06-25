@@ -64,13 +64,15 @@ app.post('/checkAllOccupancy', async (req, res) =>{
   console.log(envoy);
 
   const job = envoy.job;
-  var arr = new Array();
+  var msg = new Array();
   for(const room of data){
     console.log(room)
     console.log(room['occupancy'])
     console.log(room['device_id'])
+    msg[room['device_id']] = room['occupancy']
+    console.log(room)
   }
-  await job.attach({ label: 'Hello', value: data });
+  await job.attach(msg);
   console.log(data);
 
   res.send(data)
