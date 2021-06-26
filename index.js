@@ -75,7 +75,7 @@ app.post('/checkAllOccupancy', async (req, res) =>{
 
   }
   console.log(msg)
-  await job.attach({ label: "Room occupancy:", value: msg });
+  await job.attach({ label: "Room occupancy", value: JSON.stringify(data); });
   console.log(data);
 
   res.send(data)
