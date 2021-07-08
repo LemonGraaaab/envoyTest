@@ -95,7 +95,7 @@ app.get('/demo', (req, res) => {
 
   fetch(url, options)
     .then(res => res.json())
-    .then(json => {auth_res = json;})
+    .then(json => auth_res = json)
     .catch(err => console.error('error:' + err));
   console.log(auth_res);
   console.log(typeof auth_res);
