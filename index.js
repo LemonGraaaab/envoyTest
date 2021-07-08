@@ -82,7 +82,7 @@ app.post('/checkAllOccupancy', async (req, res) =>{
 });
 
 
-app.get('/demo', (req, res) => {
+app.get('/demo', async (req, res) => {
   
   let auth_resp
   async function myFunction(){
@@ -98,10 +98,10 @@ app.get('/demo', (req, res) => {
       let auth_res;
       auth_res = await fetch(url, options)
         .then(res => res.json());
-        return auth_res
+      return auth_res
       // do whatever you need with vm.feed below
    }
-  auth_resp = myFunction()
+  auth_resp = await myFunction()
   console.log(auth_resp);
   console.log(typeof auth_resp);
 
