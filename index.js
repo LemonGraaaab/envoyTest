@@ -91,11 +91,16 @@ app.get('/demo', (req, res) => {
     headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json','Authorization': 'Basic NzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjOmIzY2RhYTg3NjcwYzRhMDJmZWZlYmVmNjcwODllN2JiMzUxMTA4ZGQ3NjU5NDI3MTU0NDE3ZDQ3MTYyZjk5ZGY1NDIyYTYzMGUyZjEwMTY0NDZhOTZlN2YwMmEwY2RlYWQyNmU4Y2VkODE5YTZlN2I1NzE3MzIzNzhiNWUyNmVl'},
     body: '{"grant_type":"password","scope":"companies.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
   };
+  let auth_res
 
   fetch(url, options)
     .then(res => res.json())
-    .then(json => console.log(json))
+    .then(json => {auth_res = json;})
     .catch(err => console.error('error:' + err));
+  console.log(auth_res);
+  console.log(typeof auth_res);
+
+
   res.send([
     {
       label: 'Hello',
