@@ -103,7 +103,8 @@ app.get('/demo', async (req, res) => {
    }
   auth_resp = await myFunction()
   console.log(auth_resp);
-  console.log(typeof auth_resp);
+  auth_token = auth_resp.access_token
+  console.log(auth_token);
 
 
   res.send([
