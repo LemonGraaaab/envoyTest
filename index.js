@@ -81,6 +81,37 @@ app.post('/checkAllOccupancy', async (req, res) =>{
   res.send(data)
 });
 
+
+app.get('/demo', (req, res) => {
+  const fetch = require('node-fetch');
+
+  const url = 'https://app.envoy.com/a/auth/v0/token';
+  const options = {
+    method: 'POST',
+    headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json','Authorization': 'Basic NzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjOmIzY2RhYTg3NjcwYzRhMDJmZWZlYmVmNjcwODllN2JiMzUxMTA4ZGQ3NjU5NDI3MTU0NDE3ZDQ3MTYyZjk5ZGY1NDIyYTYzMGUyZjEwMTY0NDZhOTZlN2YwMmEwY2RlYWQyNmU4Y2VkODE5YTZlN2I1NzE3MzIzNzhiNWUyNmVl'},
+    body: '{"grant_type":"password","scope":"companies.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.error('error:' + err));
+  res.send([
+    {
+      label: 'Hello',
+      value: 'Hello',
+    },
+    {
+      label: 'Hola',
+      value: 'Hola',
+    },
+    {
+      label: 'Aloha',
+      value: 'Aloha',
+    },
+  ]);
+});
+
 app.post('/entry-sign-in', async (req, res) => {
   const envoy = req.envoy; // our middleware adds an "envoy" object to req.
 
