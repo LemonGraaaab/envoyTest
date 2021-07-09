@@ -106,11 +106,14 @@ app.get('/demo', async (req, res) => {
   auth_token = auth_resp.access_token
   console.log(auth_token);
 
-const fetch = require('node-fetch');
+  auth = 'Bearer '+ auth_token
+  console.log(auth);
+
+  const fetch = require('node-fetch');
   const url = 'https://api.envoy.com/rest/v1/reservations';
   const options = {
     method: 'POST',
-    headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer  eyJhbGciOiJFUzM4NCJ9.eyJpYXQiOjE2MjU4MDQyMzYsImlzcyI6ImlkLmVudm95LmNvbSIsImp0aSI6IjE5ZjU4ZTMyLTdlOGQtNGMyNS04NDBiLWU3ZTgzODRiOTAzNiIsImV4cCI6MTYyNTg5MDYzNiwic3ViIjoiVXNlcjoxNDMxMzE4IiwiYXVkIjoiNzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjIiwidHlwIjoiYWNjZXNzIiwic2NvcGVzIjpbInJlc2VydmF0aW9ucy5yZWFkIiwic3BhY2VzLnJlYWQiLCJ0b2tlbi5yZWZyZXNoIiwibG9jYXRpb25zLnJlYWQiLCJyZXNlcnZhdGlvbnMud3JpdGUiLCJlbXBsb3llZXMucmVhZCJdLCJtZXRhIjp7ImNvbXBhbnlfaWQiOiI5OTA3MyIsInRocm93X2F3YXlfcm9vbXNfYWRtaW5fdXNlcl9mbGFnIjp0cnVlLCJleHRlcm5hbF9kZXYiOiJ0cnVlIn19.hlCHb5dwwR7XzvRIsIhiM-TPIT-dyQ0Yq6-l70NMs8WJTldCi3aA2AJx4Up06mz6hicMWl4QTssUNMO_3PsKcOoOuIyh_c8doDY0o4MKPrqKs2K29YDiVTd2hpPx3zKN'},
+    headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': auth},
     body: JSON.stringify({
       reservation: {
         locationId: '128566',
