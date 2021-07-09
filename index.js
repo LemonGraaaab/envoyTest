@@ -33,7 +33,7 @@ function queryOccupany(tokenStr){
 
     // using .then, create a new promise which extracts the data
   const dataPromise = promise.then((response) => response.data)
-  console.log("QUERY2");
+  console.log(dataPromise);
 
     // return it
   return dataPromise
@@ -56,7 +56,7 @@ app.get('/hello-options', (req, res) => {
   ]);
 });
 
-app.post('/checkAllOccupancy', async (req, res) =>{
+app.get('/checkAllOccupancy', async (req, res) =>{
   const token = await getToken();
   console.log(token);
   const data = await queryOccupany(token)
