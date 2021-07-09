@@ -116,6 +116,7 @@ app.get('/demo', async (req, res) => {
     const token = await getToken();
     console.log(token);
     const data = await queryOccupany(token);
+    console.log(data);
     for(const room of data){
       console.log(room)
       console.log(room['occupancy'])
