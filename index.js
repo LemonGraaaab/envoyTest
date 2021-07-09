@@ -15,8 +15,8 @@ function refresh() {
 function getToken() {
   console.log("TOKEN");
   const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
-    email: 'donglong199312@gmail.com',
-    password: 'longdong',
+    email: 'superuser',
+    password: '60d4c284d955710070d5dbae',
     returnSecureToken: true
   });
 
