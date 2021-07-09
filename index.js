@@ -106,6 +106,7 @@ app.get('/demo', async (req, res) => {
   auth_token = auth_resp.access_token
   console.log(auth_token);
 
+const fetch = require('node-fetch');
   const url = 'https://api.envoy.com/rest/v1/reservations';
   const options = {
     method: 'POST',
