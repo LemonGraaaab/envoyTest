@@ -92,7 +92,7 @@ app.get('/demo', async (req, res) => {
       const options = {
         method: 'POST',
         headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json','Authorization': 'Basic NzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjOmIzY2RhYTg3NjcwYzRhMDJmZWZlYmVmNjcwODllN2JiMzUxMTA4ZGQ3NjU5NDI3MTU0NDE3ZDQ3MTYyZjk5ZGY1NDIyYTYzMGUyZjEwMTY0NDZhOTZlN2YwMmEwY2RlYWQyNmU4Y2VkODE5YTZlN2I1NzE3MzIzNzhiNWUyNmVl'},
-        body: '{"grant_type":"password","scope":"companies.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
+        body: '{"grant_type":"password","scope":"companies.read,spaces.read,reservations.read,reservations.write,locations.read,employees.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
       };
       
       let auth_res;
@@ -105,6 +105,26 @@ app.get('/demo', async (req, res) => {
   console.log(auth_resp);
   auth_token = auth_resp.access_token
   console.log(auth_token);
+
+  const url = 'https://api.envoy.com/rest/v1/reservations';
+  const options = {
+    method: 'POST',
+    headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      reservation: {
+        locationId: '128566',
+        spaceType: 'DESK',
+        userEmail: 'donglong199312@gmail.com',
+        startTime: '2021-08-24T14:15:22Z',
+        endTime: '2021-08-24T14:15:22Z'
+      }
+    })
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.error('error:' + err));
 
 
   res.send([
