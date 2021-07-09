@@ -102,33 +102,51 @@ app.get('/demo', async (req, res) => {
       // do whatever you need with vm.feed below
    }
   auth_resp = await myFunction()
-  console.log(auth_resp);
   auth_token = auth_resp.access_token
   console.log(auth_token);
 
   auth = 'Bearer '+ auth_token
   console.log(auth);
 
-  const fetch = require('node-fetch');
-  const url = 'https://api.envoy.com/rest/v1/reservations';
-  const options = {
-    method: 'POST',
-    headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': auth},
-    body: JSON.stringify({
-      reservation: {
-        locationId: '128566',
-        spaceType: 'DESK',
-        userEmail: 'donglong199312@gmail.com',
-        startTime: '2021-08-24T14:15:22Z',
-        endTime: '2021-08-24T14:15:22Z'
-      }
-    })
-  };
+  console.log("Start pulling Occupany Data...");
+  pull_time = 1;
+  while(pull_time > 0){
+    pull_time--;
+    console.log("Checking Occupany...");
+    const token = await getToken();
+    console.log(token);
+    const data = await queryOccupany(token);
+    for(const room of data){
+      console.log(room)
+      console.log(room['occupancy'])
+      console.log(room['device_id'])
+      msg[room['device_id']] = room['occupancy']
+      console.log(room)
+      console.log(msg)
+    }
 
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => console.log(json))
-    .catch(err => console.error('error:' + err));
+  }
+
+  // const fetch = require('node-fetch');
+  // const reserve_url = 'https://api.envoy.com/rest/v1/reservations';
+  // const options = {
+  //   method: 'POST',
+  //   headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': auth},
+  //   body: JSON.stringify({
+  //     reservation: {
+  //       locationId: '128566',
+  //       spaceType: 'DESK',
+  //       userEmail: 'donglong199312@gmail.com',
+  //       startTime: '2021-08-24T14:15:22Z',
+  //       endTime: '2021-08-24T14:15:22Z'
+  //     }
+  //   })
+  // };
+
+  // fetch(reserve_url, options)
+  //   .then(res => res.json())
+  //   .then(json => console.log(json))
+  //   .catch(err => console.error('error:' + err));
 
 
   res.send([
