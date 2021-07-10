@@ -25,6 +25,12 @@ async function envoyAuth(){
       // do whatever you need with vm.feed below
 }
 
+function getStartTime(baseTime){
+  var seconds = 150;
+  var newDate = new Date(startTime.getTime() + (1000 * seconds))
+  return newDate
+}
+
 function getEndTime(startTime){
   var seconds = 10;
   var newDate = new Date(startTime.getTime() + (1000 * seconds))
@@ -36,7 +42,7 @@ function createReservation(locationId,auth) {
   const fetch = require('node-fetch');
 
   const url = 'https://api.envoy.com/rest/v1/reservations';
-  startTime = new Date();
+  startTime = getStartTime(new Date());
   endTime = getEndTime(startTime);
   const options = {
     method: 'POST',
@@ -162,9 +168,6 @@ app.get('/demo', async (req, res) => {
         reserve_resp = await createReservation('128566',auth)
         console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
       }
-      console.log(room['occupancy'])
-      console.log(room['device_id'])
-      console.log(room)
     }
 
   }
