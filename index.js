@@ -8,15 +8,64 @@ const app = express();
 app.use(middleware());
 
 
-function refresh() { 
-  
+async function envoyAuth(){
+      const fetch = require('node-fetch');
+
+      const url = 'https://app.envoy.com/a/auth/v0/token';
+      const options = {
+        method: 'POST',
+        headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json','Authorization': 'Basic NzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjOmIzY2RhYTg3NjcwYzRhMDJmZWZlYmVmNjcwODllN2JiMzUxMTA4ZGQ3NjU5NDI3MTU0NDE3ZDQ3MTYyZjk5ZGY1NDIyYTYzMGUyZjEwMTY0NDZhOTZlN2YwMmEwY2RlYWQyNmU4Y2VkODE5YTZlN2I1NzE3MzIzNzhiNWUyNmVl'},
+        body: '{"grant_type":"password","scope":"companies.read,spaces.read,reservations.read,reservations.write,locations.read,employees.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
+      };
+      
+      let auth_res;
+      auth_res = await fetch(url, options)
+        .then(res => res.json());
+      return auth_res
+      // do whatever you need with vm.feed below
+}
+
+function getEndTime(startTime){
+  var seconds = 10;
+  var newDate = new Date(startTime.getTime() + (1000 * seconds))
+  return newDate
+}
+
+
+function createReservation(locationId,auth) {
+  const fetch = require('node-fetch');
+
+  const url = 'https://api.envoy.com/rest/v1/reservations';
+  startTime = new Date();
+  endTime = getEndTime(startTime);
+  const options = {
+    method: 'POST',
+    headers: {Accept: 'application/json', 'Content-Type': 'application/json','Authorization': auth},
+    body: JSON.stringify({
+      reservation: {
+        locationId: '128566',
+        spaceType: 'DESK',
+        userEmail: 'donglong199312@gmail.com',
+        startTime: startTime,
+        endTime: endTime
+      }
+    })
+  };
+  console.log("CREATE RES");
+  console.log(options);
+
+
+  return fetch(url, options)
+    .then(res => res.json())
+    // .then(json => console.log(json))
+    .catch(err => console.error('error:' + err));
 }
 
 function getToken() {
   console.log("TOKEN");
   const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
-    email: 'superuser',
-    password: '60d4c284d955710070d5dbae',
+    email: 'donglong199312@gmail.com',
+    password: 'longdong',
     returnSecureToken: true
   });
 
@@ -27,7 +76,7 @@ function getToken() {
 function queryOccupany(tokenStr){
   console.log("QUERY");
   // create a promise for the axios request
-  const promise = axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=30_11&data_type=occupancy_raw&database=idpsante&room_tag=office",{ headers: {"Authorization" : `Bearer ${tokenStr}`} })
+  const promise = axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=30_11&data_type=occupancy_raw&database=idpsante",{ headers: {"Authorization" : `Bearer ${tokenStr}`} })
 
   console.log("QUERY1");
 
@@ -85,23 +134,7 @@ app.get('/checkAllOccupancy', async (req, res) =>{
 app.get('/demo', async (req, res) => {
   
   let auth_resp
-  async function myFunction(){
-      const fetch = require('node-fetch');
-
-      const url = 'https://app.envoy.com/a/auth/v0/token';
-      const options = {
-        method: 'POST',
-        headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json','Authorization': 'Basic NzJiNjBkYTQtY2YxOC0xMWViLTk0MjctZTczZjc1MDMxMzZjOmIzY2RhYTg3NjcwYzRhMDJmZWZlYmVmNjcwODllN2JiMzUxMTA4ZGQ3NjU5NDI3MTU0NDE3ZDQ3MTYyZjk5ZGY1NDIyYTYzMGUyZjEwMTY0NDZhOTZlN2YwMmEwY2RlYWQyNmU4Y2VkODE5YTZlN2I1NzE3MzIzNzhiNWUyNmVl'},
-        body: '{"grant_type":"password","scope":"companies.read,spaces.read,reservations.read,reservations.write,locations.read,employees.read","password":"C0rbuC0rbu","username":"admin@butlr.tech"}'
-      };
-      
-      let auth_res;
-      auth_res = await fetch(url, options)
-        .then(res => res.json());
-      return auth_res
-      // do whatever you need with vm.feed below
-   }
-  auth_resp = await myFunction()
+  auth_resp = await envoyAuth()
   auth_token = auth_resp.access_token
   console.log(auth_token);
 
@@ -117,13 +150,22 @@ app.get('/demo', async (req, res) => {
     console.log(token);
     const data = await queryOccupany(token);
     console.log(data);
+    console.log("Fetching data from Butlr...");
+
     for(const room of data){
       console.log(room)
+      console.log("Butlr Device "+room['device_id'] + " has occupany "+room['occupancy']);
+      occupancy = Number(room['occupancy']);
+      if(occupancy==0){
+        console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
+        // Always create under location 128566
+        reserve_resp = await createReservation('128566',auth)
+        console.log("successfully created reservation with response "+reserve_resp);        
+      }
       console.log(room['occupancy'])
       console.log(room['device_id'])
       msg[room['device_id']] = room['occupancy']
       console.log(room)
-      console.log(msg)
     }
 
   }
