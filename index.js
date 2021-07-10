@@ -27,7 +27,7 @@ async function envoyAuth(){
 
 function getStartTime(baseTime){
   var seconds = 150;
-  var newDate = new Date(startTime.getTime() + (1000 * seconds))
+  var newDate = new Date(baseTime.getTime() + (1000 * seconds))
   return newDate
 }
 
