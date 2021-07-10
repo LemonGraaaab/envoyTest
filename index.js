@@ -160,11 +160,10 @@ app.get('/demo', async (req, res) => {
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth)
-        console.log("successfully created reservation with response "+reserve_resp);        
+        console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
       }
       console.log(room['occupancy'])
       console.log(room['device_id'])
-      msg[room['device_id']] = room['occupancy']
       console.log(room)
     }
 
