@@ -170,19 +170,18 @@ app.get('/demo', async (req, res) => {
       if(i%2==0){
         occupancy = 1
       }
-      console.log("Butlr Device "+room['device_id'] + " has occupany "+occupany);
+      console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
 
       if(i%2==0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth)
         dict[room['device_id']] = Date.parse(reserve_resp['endTime'])
-        console.log(dict);        
-
+        console.log(dict);
 
         console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
       }
-
+      await new Promise(resolve => setTimeout(resolve, 2000));
       i++;
     }
 
