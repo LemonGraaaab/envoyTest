@@ -150,6 +150,7 @@ app.get('/demo', async (req, res) => {
   console.log("Start pulling Occupany Data...");
   pull_time = 1;
   while(pull_time > 0){
+    var dict = {};
     pull_time--;
     console.log("Checking Occupany...");
     const token = await getToken();
@@ -157,17 +158,32 @@ app.get('/demo', async (req, res) => {
     const data = await queryOccupany(token);
     console.log(data);
     console.log("Fetching data from Butlr...");
+    i = 0;
 
     for(const room of data){
       console.log(room)
-      console.log("Butlr Device "+room['device_id'] + " has occupany "+room['occupancy']);
-      occupancy = Number(room['occupancy']);
-      if(occupancy==0){
+      console.log(i)
+
+      // Change to actual occupany data once we have control over them
+      // occupancy = Number(room['occupancy']);
+      occupancy = 0;
+      if(i%2==0){
+        occupancy = 1
+      }
+      console.log("Butlr Device "+room['device_id'] + " has occupany "+occupany);
+
+      if(i%2==0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth)
+        dict[room['device_id']] = Date.parse(reserve_resp['endTime'])
+        console.log(dict);        
+
+
         console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
       }
+
+      i++;
     }
 
   }
