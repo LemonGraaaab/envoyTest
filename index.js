@@ -49,7 +49,7 @@ function createReservation(locationId,auth,dict) {
 
   if(startTime<dict['00-17-0d-00-00-70-ce-3e']){
     console.log("Trying to create reservation for device 00-17-0d-00-00-70-ce-3e but it already have an existing one now, skip reservation creation now.")
-    return;
+    return null;
   }
   endTime = getEndTime(startTime);
   const options = {
@@ -174,11 +174,13 @@ app.get('/demo', async (req, res) => {
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth,dict)
-        console.log(reserve_resp['data']['endTime']);
-        dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
-        console.log(dict);
+        if(reserve_resp!=null){
+          console.log(reserve_resp['data']['endTime']);
+          dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
+          console.log(dict);
 
-        console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
+          console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
+        }      
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
