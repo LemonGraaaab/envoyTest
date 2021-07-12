@@ -26,13 +26,13 @@ async function envoyAuth(){
 }
 
 function getStartTime(baseTime){
-  var seconds = 150;
+  var seconds = 2;
   var newDate = new Date(baseTime.getTime() + (1000 * seconds))
   return newDate
 }
 
 function getEndTime(startTime){
-  var seconds = 10;
+  var seconds = 50;
   var newDate = new Date(startTime.getTime() + (1000 * seconds))
   return newDate
 }
@@ -186,7 +186,7 @@ app.get('/demo', async (req, res) => {
 
         console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));        
       }
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
     }
 
