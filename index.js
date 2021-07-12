@@ -43,8 +43,6 @@ function createReservation(locationId,auth,dict) {
 
   const url = 'https://api.envoy.com/rest/v1/reservations';
   startTime = getStartTime(new Date());
-  console.log(startTime)
-    console.log(dict['00-17-0d-00-00-70-ce-3e'])
 
 
   if(startTime<dict['00-17-0d-00-00-70-ce-3e']){
@@ -149,7 +147,7 @@ app.get('/demo', async (req, res) => {
 
   console.log("Start pulling Occupany Data...");
   var dict = {};
-  pull_time = 2;
+  pull_time = 10;
   while(pull_time > 0){
     pull_time--;
     console.log("Checking Occupany...");
