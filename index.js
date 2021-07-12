@@ -43,6 +43,10 @@ function createReservation(locationId,auth,dict) {
 
   const url = 'https://api.envoy.com/rest/v1/reservations';
   startTime = getStartTime(new Date());
+  console.log(startTime)
+    console.log(dict['00-17-0d-00-00-70-ce-3e'])
+
+
   if(startTime<dict['00-17-0d-00-00-70-ce-3e']){
     console.log("Trying to create reservation for device 00-17-0d-00-00-70-ce-3e but it already have an existing one now, skip reservation creation now.")
     return;
@@ -61,8 +65,6 @@ function createReservation(locationId,auth,dict) {
       }
     })
   };
-  console.log("CREATE RES");
-  console.log(options);
 
 
   return fetch(url, options)
@@ -72,7 +74,6 @@ function createReservation(locationId,auth,dict) {
 }
 
 function getToken() {
-  console.log("TOKEN");
   const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
     email: 'donglong199312@gmail.com',
     password: 'longdong',
@@ -84,15 +85,12 @@ function getToken() {
 }
 
 function queryOccupany(tokenStr){
-  console.log("QUERY");
   // create a promise for the axios request
   const promise = axios.get("https://jyi8o8b1tb.execute-api.us-west-1.amazonaws.com/prod/api/v2/streams?hive_id=30_11&data_type=occupancy_raw&database=idpsante",{ headers: {"Authorization" : `Bearer ${tokenStr}`} })
 
-  console.log("QUERY1");
 
     // using .then, create a new promise which extracts the data
   const dataPromise = promise.then((response) => response.data)
-  console.log(dataPromise);
 
     // return it
   return dataPromise
@@ -146,10 +144,8 @@ app.get('/demo', async (req, res) => {
   let auth_resp
   auth_resp = await envoyAuth()
   auth_token = auth_resp.access_token
-  console.log(auth_token);
 
   auth = 'Bearer '+ auth_token
-  console.log(auth);
 
   console.log("Start pulling Occupany Data...");
   pull_time = 2;
@@ -158,9 +154,7 @@ app.get('/demo', async (req, res) => {
     pull_time--;
     console.log("Checking Occupany...");
     const token = await getToken();
-    console.log(token);
     const data = await queryOccupany(token);
-    console.log(data);
     console.log("Fetching data from Butlr...");
     i = 0;
 
