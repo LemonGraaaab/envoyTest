@@ -157,10 +157,9 @@ app.get('/demo', async (req, res) => {
     const data = await queryOccupany(token);
     console.log("Fetching data from Butlr...");
     i = 0;
-
     for(const room of data){
-      console.log(room)
-      console.log(i)
+      // console.log(room)
+      // console.log(i)
 
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
@@ -169,8 +168,7 @@ app.get('/demo', async (req, res) => {
         occupancy = 1
       }
       console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
-
-      if(i%2==0){
+      if(occupancy  > 0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth,dict)
@@ -181,6 +179,8 @@ app.get('/demo', async (req, res) => {
 
           console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
         }      
+      }else{
+        console.log("No occupany detected, do not create reservation, continue pulling....");  
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
