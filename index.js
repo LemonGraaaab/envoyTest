@@ -148,9 +148,9 @@ app.get('/demo', async (req, res) => {
   auth = 'Bearer '+ auth_token
 
   console.log("Start pulling Occupany Data...");
+  var dict = {};
   pull_time = 2;
   while(pull_time > 0){
-    var dict = {};
     pull_time--;
     console.log("Checking Occupany...");
     const token = await getToken();
@@ -183,7 +183,6 @@ app.get('/demo', async (req, res) => {
       await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
     }
-
   }
 
   // const fetch = require('node-fetch');
