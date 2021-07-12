@@ -38,11 +38,15 @@ function getEndTime(startTime){
 }
 
 
-function createReservation(locationId,auth) {
+function createReservation(locationId,auth,dict) {
   const fetch = require('node-fetch');
 
   const url = 'https://api.envoy.com/rest/v1/reservations';
   startTime = getStartTime(new Date());
+  if(startTime<dict['00-17-0d-00-00-70-ce-3e']){
+    console.log("Trying to create reservation for device 00-17-0d-00-00-70-ce-3e but it already have an existing one now, skip reservation creation now.")
+    return;
+  }
   endTime = getEndTime(startTime);
   const options = {
     method: 'POST',
@@ -148,7 +152,7 @@ app.get('/demo', async (req, res) => {
   console.log(auth);
 
   console.log("Start pulling Occupany Data...");
-  pull_time = 1;
+  pull_time = 2;
   while(pull_time > 0){
     var dict = {};
     pull_time--;
@@ -175,7 +179,7 @@ app.get('/demo', async (req, res) => {
       if(i%2==0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
-        reserve_resp = await createReservation('128566',auth)
+        reserve_resp = await createReservation('128566',auth,dict)
         console.log(reserve_resp['data']['endTime']);
         dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
         console.log(dict);
