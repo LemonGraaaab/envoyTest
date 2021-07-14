@@ -75,7 +75,7 @@ function createReservation(locationId,auth,dict) {
 function cancelReservation(reservationId,auth) {
   const fetch = require('node-fetch');
 
-  const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/checkin';
+  const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/cancel';
   const options = {method: 'POST',    headers: {Accept: 'application/json', 'Content-Type': 'application/json','Authorization': auth},
 };
 
