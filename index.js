@@ -229,10 +229,10 @@ app.get('/democancel', async (req, res) => {
   pull_time = 10;
   while(pull_time > 0){
     pull_time--;
-    console.log("Checking Occupany...");
+    // console.log("Checking Occupany...");
     const token = await getToken();
     const data = await queryOccupany(token);
-    console.log("Fetching data from Butlr...");
+    // console.log("Fetching data from Butlr...");
     i = 0;
     for(const room of data){
       // console.log(room)
