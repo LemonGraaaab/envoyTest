@@ -72,11 +72,12 @@ function createReservation(locationId,auth,dict) {
 }
 
 
-function cancelReservation(reservationId) {
+function cancelReservation(reservationId,auth) {
   const fetch = require('node-fetch');
 
   const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/checkin';
-  const options = {method: 'POST'};
+  const options = {method: 'POST',    headers: {Accept: 'application/json', 'Content-Type': 'application/json','Authorization': auth},
+};
 
   return fetch(url, options)
     .then(res => res.json())
@@ -257,7 +258,7 @@ app.get('/democancel', async (req, res) => {
         }      
       }else{
         console.log("No occupany detected, has pending reservation ....");
-        cancel_resp = await cancelReservation('d-480628');
+        cancel_resp = await cancelReservation('d-480628',auth);
         console.log(cancel_resp);
 
       }
