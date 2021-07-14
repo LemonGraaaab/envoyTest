@@ -32,7 +32,7 @@ function getStartTime(baseTime){
 }
 
 function getEndTime(startTime){
-  var seconds = 50;
+  var seconds = 100;
   var newDate = new Date(startTime.getTime() + (1000 * seconds))
   return newDate
 }
@@ -70,6 +70,27 @@ function createReservation(locationId,auth,dict) {
     // .then(json => console.log(json))
     .catch(err => console.error('error:' + err));
 }
+
+
+function cancelReservation(reservationId) {
+  const fetch = require('node-fetch');
+
+  const url = 'https://api.envoy.com/rest/v1/reservations';
+  startTime = getStartTime(new Date());
+
+  const options = {
+    method: 'POST',
+    headers: {Accept: 'application/json', 'Content-Type': 'application/json','Authorization': auth},
+    body: JSON.stringify({
+      reservation: {
+        locationId: '128566',
+        spaceType: 'DESK',
+        userEmail: 'donglong199312@gmail.com',
+        startTime: startTime,
+        endTime: endTime
+      }
+    })
+  };
 
 function getToken() {
   const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
@@ -185,28 +206,6 @@ app.get('/demo', async (req, res) => {
     }
   }
 
-  // const fetch = require('node-fetch');
-  // const reserve_url = 'https://api.envoy.com/rest/v1/reservations';
-  // const options = {
-  //   method: 'POST',
-  //   headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': auth},
-  //   body: JSON.stringify({
-  //     reservation: {
-  //       locationId: '128566',
-  //       spaceType: 'DESK',
-  //       userEmail: 'donglong199312@gmail.com',
-  //       startTime: '2021-08-24T14:15:22Z',
-  //       endTime: '2021-08-24T14:15:22Z'
-  //     }
-  //   })
-  // };
-
-  // fetch(reserve_url, options)
-  //   .then(res => res.json())
-  //   .then(json => console.log(json))
-  //   .catch(err => console.error('error:' + err));
-
-
   res.send([
     {
       label: 'Hello',
@@ -223,22 +222,67 @@ app.get('/demo', async (req, res) => {
   ]);
 });
 
-app.post('/entry-sign-in', async (req, res) => {
-  const envoy = req.envoy; // our middleware adds an "envoy" object to req.
 
-  const job = envoy.job;
-  const hello = envoy.meta.config.HELLO;
-  const visitor = envoy.payload;
-  const visitorName = visitor.attributes['full-name'];
+app.get('/democancel', async (req, res) => {
   
-  const message = `${hello} ${visitorName}!`; // our custom greeting
-  await job.attach({ label: 'Hello', value: message }); // show in the Envoy dashboard.
-  
-  res.send({ hello });
-});
+  let auth_resp
+  auth_resp = await envoyAuth()
+  auth_token = auth_resp.access_token
 
-app.use(errorMiddleware());
+  auth = 'Bearer '+ auth_token
 
-const listener = app.listen(process.env.PORT || 0, () => {
-  console.log(`Listening on port ${listener.address().port}`);
+  console.log("Start pulling Occupany Data...");
+  var dict = {};
+  pull_time = 10;
+  while(pull_time > 0){
+    pull_time--;
+    console.log("Checking Occupany...");
+    const token = await getToken();
+    const data = await queryOccupany(token);
+    console.log("Fetching data from Butlr...");
+    i = 0;
+    for(const room of data){
+      // console.log(room)
+      // console.log(i)
+
+      // Change to actual occupany data once we have control over them
+      // occupancy = Number(room['occupancy']);
+      occupancy = 0;
+      if(i%2==0){
+        occupancy = 1
+      }
+      console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
+      if(occupancy  > 0){
+        console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
+        // Always create under location 128566
+        reserve_resp = await createReservation('128566',auth,dict)
+        if(reserve_resp!=null){
+          console.log(reserve_resp['data']['endTime']);
+          dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
+          console.log(dict);
+
+          console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
+        }      
+      }else{
+        console.log("No occupany detected, do not create reservation, continue pulling....");  
+      }
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      i++;
+    }
+  }
+
+  res.send([
+    {
+      label: 'Hello',
+      value: 'Hello',
+    },
+    {
+      label: 'Hola',
+      value: 'Hola',
+    },
+    {
+      label: 'Aloha',
+      value: 'Aloha',
+    },
+  ]);
 });
