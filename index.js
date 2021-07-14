@@ -264,7 +264,7 @@ app.get('/democancel', async (req, res) => {
         }
         cancel_resp = await cancelReservation('d-480661',auth);
       }
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      await new Promise(resolve => setTimeout(resolve, 6000));
       i++;
     }
   }
