@@ -239,10 +239,10 @@ app.get('/democancel', async (req, res) => {
 
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
-      occupancy = 1;
-      if(i%2==1){
-        occupancy = 0
-      }
+      occupancy = 0;
+      // if(i%2==1){
+      //   occupancy = 0
+      // }
       console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
       if(occupancy  > 0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
