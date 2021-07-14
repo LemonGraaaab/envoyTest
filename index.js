@@ -73,24 +73,16 @@ function createReservation(locationId,auth,dict) {
 
 
 function cancelReservation(reservationId) {
-  const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
-  const url = 'https://api.envoy.com/rest/v1/reservations';
-  startTime = getStartTime(new Date());
+const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/checkin';
+const options = {method: 'POST'};
 
-  const options = {
-    method: 'POST',
-    headers: {Accept: 'application/json', 'Content-Type': 'application/json','Authorization': auth},
-    body: JSON.stringify({
-      reservation: {
-        locationId: '128566',
-        spaceType: 'DESK',
-        userEmail: 'donglong199312@gmail.com',
-        startTime: startTime,
-        endTime: endTime
-      }
-    })
-  };
+return fetch(url, options)
+  .then(res => res.json())
+  .catch(err => console.error('error:' + err));
+}
+
 
 function getToken() {
   const promise =  axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvjUMP-pEGcl_0VEc-Ptc6lJTrs5M-VV8', {
@@ -199,7 +191,7 @@ app.get('/demo', async (req, res) => {
           console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
         }      
       }else{
-        console.log("No occupany detected, do not create reservation, continue pulling....");  
+        console.log("No occupany detected, No pending reservation, continue pulling....");  
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
@@ -247,15 +239,15 @@ app.get('/democancel', async (req, res) => {
 
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
-      occupancy = 0;
-      if(i%2==0){
-        occupancy = 1
+      occupancy = 1;
+      if(i%2==1){
+        occupancy = 0
       }
       console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
       if(occupancy  > 0){
         console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
         // Always create under location 128566
-        reserve_resp = await createReservation('128566',auth,dict)
+        reserve_resp = await createReservation('128566')
         if(reserve_resp!=null){
           console.log(reserve_resp['data']['endTime']);
           dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
@@ -264,7 +256,10 @@ app.get('/democancel', async (req, res) => {
           console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
         }      
       }else{
-        console.log("No occupany detected, do not create reservation, continue pulling....");  
+        console.log("No occupany detected, has pending reservation ....");
+        cancel_resp = await cancelReservation('128566');
+        console.log(cancel_resp);
+
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
       i++;
