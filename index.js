@@ -73,14 +73,14 @@ function createReservation(locationId,auth,dict) {
 
 
 function cancelReservation(reservationId) {
-const fetch = require('node-fetch');
+  const fetch = require('node-fetch');
 
-const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/checkin';
-const options = {method: 'POST'};
+  const url = 'https://api.envoy.com/rest/v1/reservations/'  +reservationId+ '/checkin';
+  const options = {method: 'POST'};
 
-return fetch(url, options)
-  .then(res => res.json())
-  .catch(err => console.error('error:' + err));
+  return fetch(url, options)
+    .then(res => res.json())
+    .catch(err => console.error('error:' + err));
 }
 
 
