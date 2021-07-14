@@ -258,7 +258,7 @@ app.get('/democancel', async (req, res) => {
         }      
       }else{
         console.log("No occupany detected, has pending reservation ....");
-        cancel_resp = await cancelReservation('d-480645',auth);
+        cancel_resp = await cancelReservation('d-480661',auth);
         console.log(cancel_resp);
 
       }
