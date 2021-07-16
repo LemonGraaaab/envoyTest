@@ -179,7 +179,7 @@ app.get('/demo', async (req, res) => {
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
       occupancy = 0;
-      if(i%2==0){
+      if(i==0){
         occupancy = 1
       }
       console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
