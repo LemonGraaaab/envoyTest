@@ -42,7 +42,10 @@ function createReservation(locationId,auth,dict) {
   const fetch = require('node-fetch');
 
   const url = 'https://api.envoy.com/rest/v1/reservations';
-  startTime = getStartTime(new Date());
+  const today = new Date()
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  startTime = getStartTime(tomorrow);
 
 
   if(startTime<dict['00-17-0d-00-00-70-ce-3e']){
