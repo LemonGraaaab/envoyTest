@@ -179,12 +179,13 @@ app.get('/demo', async (req, res) => {
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
       occupancy = 0;
+      console.log(i);
       if(i==0){
         occupancy = 1
       }
       console.log("Butlr Device "+room['device_id'] + " has occupany "+occupancy);
       if(occupancy  > 0){
-        console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently empty...");
+        console.log("Create reservation automatically for space with device "+room['device_id'] + " since it is currently not empty...");
         // Always create under location 128566
         reserve_resp = await createReservation('128566',auth,dict)
         if(reserve_resp!=null){
