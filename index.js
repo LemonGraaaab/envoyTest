@@ -264,7 +264,7 @@ app.get('/democancel', async (req, res) => {
         if(pull_time == 9){
           console.log("No occupany detected,has pending reservation, CANCEL it");
           cancel_resp = await cancelReservation('d-508627',auth);
-          console.log(cancel_resp)
+          // console.log(cancel_resp)
         }else{
           console.log("No occupany detected,no pending reservation, continue pulling....");
         }
