@@ -265,7 +265,7 @@ app.get('/democancel', async (req, res) => {
         }else{
           console.log("No occupany detected,no pending reservation, continue pulling....");
         }
-        cancel_resp = await cancelReservation('d-480661',auth);
+        cancel_resp = await cancelReservation('d-508543',auth);
       }
       await new Promise(resolve => setTimeout(resolve, 6000));
       i++;
