@@ -179,7 +179,6 @@ app.get('/demo', async (req, res) => {
       // Change to actual occupany data once we have control over them
       // occupancy = Number(room['occupancy']);
       occupancy = 0;
-      console.log(i);
       if(i==0){
         occupancy = 1
       }
@@ -199,7 +198,7 @@ app.get('/demo', async (req, res) => {
         console.log("No occupany detected, No pending reservation, continue pulling....");  
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
-      i++;
+      i = i++;
     }
   }
 
