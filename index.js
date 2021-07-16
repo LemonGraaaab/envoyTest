@@ -189,7 +189,7 @@ app.get('/demo', async (req, res) => {
         if(reserve_resp!=null){
           console.log(reserve_resp['data']['endTime']);
           dict[room['device_id']] = Date.parse(reserve_resp['data']['endTime'])
-          console.log(dict);
+          // console.log(dict);
 
           console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
         }      
