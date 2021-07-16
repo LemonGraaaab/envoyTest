@@ -231,7 +231,8 @@ app.get('/democancel', async (req, res) => {
   var dict = {};
   pull_time = 10;
   while(pull_time > 0){
-    pull_time--;
+
+    pull_time = pull_time-1;
     // console.log("Checking Occupany...");
     const token = await getToken();
     const data = await queryOccupany(token);
@@ -260,6 +261,7 @@ app.get('/democancel', async (req, res) => {
           console.log("successfully created reservation with response "+JSON.stringify(reserve_resp));  
         }      
       }else{
+        console.log(pull_time)
         if(pull_time == 9){
           console.log("No occupany detected,has pending reservation, CANCEL it");
         }else{
