@@ -83,7 +83,6 @@ function cancelReservation(reservationId,auth) {
 };
 
   return fetch(url, options)
-    .then(res => res.json())
     .catch(err => console.error('error:' + err));
 }
 
