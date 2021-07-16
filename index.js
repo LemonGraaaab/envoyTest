@@ -164,6 +164,7 @@ app.get('/demo', async (req, res) => {
 
   console.log("Start pulling Occupany Data...");
   var dict = {};
+  i = 0;
   pull_time = 10;
   while(pull_time > 0){
     pull_time--;
@@ -171,7 +172,6 @@ app.get('/demo', async (req, res) => {
     const token = await getToken();
     const data = await queryOccupany(token);
     console.log("Fetching data from Butlr...");
-    i = 0;
     for(const room of data){
       // console.log(room)
       // console.log(i)
@@ -198,7 +198,7 @@ app.get('/demo', async (req, res) => {
         console.log("No occupany detected, No pending reservation, continue pulling....");  
       }
       await new Promise(resolve => setTimeout(resolve, 4000));
-      i = i++;
+      i = i+1;
     }
   }
 
